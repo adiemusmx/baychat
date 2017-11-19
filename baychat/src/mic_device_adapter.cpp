@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "mic_device_adapter.h"
 
-#define MIC_DEVICE_ADAPTER_DEFAULT_SIZE (320000)
+#define MIC_DEVICE_ADAPTER_DEFAULT_SIZE 320000
 
 namespace BayChat
 {
@@ -74,7 +74,7 @@ MicDeviceAdapter_Wave::MicDeviceAdapter_Wave()
 	m_hWaveIn = NULL;
 	m_waveform.wFormatTag = WAVE_FORMAT_PCM;		// 声音格式为PCM
 	m_waveform.nSamplesPerSec = 16000;				// 采样率，16000次/秒
-	m_waveform.wBitsPerSample = 16;					// 采样比特，16bits/次
+	m_waveform.wBitsPerSample = 8;					// 采样比特，16bits/次
 	m_waveform.nChannels = 1;						// 采样声道数，单声道
 	m_waveform.nAvgBytesPerSec = 16000;				// 每秒的数据率，就是每秒能采集多少字节的数据
 	m_waveform.nBlockAlign = (m_waveform.nChannels * m_waveform.wBitsPerSample) / 8; // 一个块的大小，采样bit的字节数乘以声道数
@@ -104,7 +104,7 @@ void MicDeviceAdapter_Wave::openSession()
 void MicDeviceAdapter_Wave::read(size_t timeInMillisecond)
 {
 	LOGGER_TRACE_LOG_START();
-	LOGGER_INFO_LOG("time[%llu]", timeInMillisecond);
+	LOGGER_TRACE_LOG("time[%llu]", timeInMillisecond);
 
 	m_mutex->lock();
 

@@ -29,6 +29,10 @@ class Logger
 public:
 	static Logger* instance();
 
+	/* 设定log输出级别 */
+	void setLevel(LogLevel level);
+
+	/* 输出log */
 	void print(CHAR* file, uint32 lineNum, CHAR* function, LogLevel level, CHAR* content);
 
 private:
@@ -39,6 +43,8 @@ private:
 	Logger& operator=(const Logger&);
 
 	Mutex* m_mutex;
+
+	LogLevel m_level;
 };
 
 #define LOGGER_VERBOSE_LOG(format,...) { \

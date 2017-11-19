@@ -42,6 +42,9 @@
     <ClInclude Include="include\file_formatter.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="json_file.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -63,6 +66,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\file_formatter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="json_file.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -2,3 +2,7 @@ Debug/
 ipch/
 *.opendb
 *.db
+baychat.exe
+baychat.ilk
+baychat.pdb
+*.suo

@@ -13,8 +13,7 @@ AudioFormatter::~AudioFormatter()
 {
 }
 
-BOOL AudioFormatter::pcm2wav(const WCHAR * pcmFileName, const WCHAR * wavFileName)
-{
+extern "C" {
 	typedef struct WAVE_HEADER
 	{
 		char    fccID[4];       //内容为""RIFF
@@ -39,23 +38,31 @@ BOOL AudioFormatter::pcm2wav(const WCHAR * pcmFileName, const WCHAR * wavFileNam
 		char    fccID[4];       //内容为"data"
 		unsigned long dwSize;   //==NumSamples*wChannels*uiBitsPerSample/8
 	} WAVE_DATA;
+}
 
-	uint32 channels = 2;
-	uint32 sample_rate = 44100;
-	int bits = 16;
-
+BOOL AudioFormatter::pcm2wav(const WCHAR * pcmFileName, const WCHAR * wavFileName)
+{
 	WAVE_HEADER pcmHEADER;
 	WAVE_FMT    pcmFMT;
 	WAVE_DATA   pcmDATA;
 
-	unsigned short m_pcmData;
 	File pcmFile, wavFile;
+
+	memset(&pcmHEADER, 0x00, sizeof(pcmHEADER));
+	memset(&pcmFMT, 0x00, sizeof(pcmFMT));
+	memset(&pcmDATA, 0x00, sizeof(pcmDATA));
 
 	pcmFile.open(pcmFileName, FileMode_readBinary);
 	if(!pcmFile.isValid())
 	{
 		LOGGER_WARNING_LOG("open pcm file failed.");
 		return FALSE;
+	}
+
+	// 删除旧文件
+	if (File::isExist(wavFileName))
+	{
+		File::remove(wavFileName);
 	}
 
 	wavFile.open(wavFileName, FileMode_readAndWriteBinary);
@@ -68,44 +75,47 @@ BOOL AudioFormatter::pcm2wav(const WCHAR * pcmFileName, const WCHAR * wavFileNam
 	/* WAVE_HEADER */
 	memcpy(pcmHEADER.fccID, "RIFF", strlen("RIFF"));
 	memcpy(pcmHEADER.fccType, "WAVE", strlen("WAVE"));
-	pcmFile.seek(sizeof(WAVE_HEADER), FileSeekMode_cur);
+	wavFile.seek(sizeof(WAVE_HEADER), FileSeekMode_cur);
 
 	/* WAVE_FMT */
 	memcpy(pcmFMT.fccID, "fmt ", strlen("fmt "));
 	pcmFMT.dwSize = 16;
 	pcmFMT.wFormatTag = WAVE_FORMAT_PCM;
 	pcmFMT.wChannels = 1;
-	pcmFMT.dwSamplesPerSec = 8000;
-	pcmFMT.uiBitsPerSample = 16;
+	pcmFMT.dwSamplesPerSec = 16000;
+	pcmFMT.uiBitsPerSample = 8;
 	pcmFMT.dwAvgBytesPerSec = pcmFMT.dwSamplesPerSec * pcmFMT.wChannels * pcmFMT.uiBitsPerSample / 8;
 	pcmFMT.wBlockAlign = pcmFMT.wChannels * pcmFMT.uiBitsPerSample / 8;
 
-	pcmFile.write(&pcmFMT, sizeof(WAVE_FMT), FileSeekMode_cur);
+	wavFile.write(&pcmFMT, sizeof(WAVE_FMT), FileSeekMode_cur);
 
 	/* WAVE_DATA */
 	memcpy(pcmDATA.fccID, "data", strlen("data"));
 	pcmDATA.dwSize = 0;
 	wavFile.seek(sizeof(WAVE_DATA), FileSeekMode_cur);
 
-	pcmFile.read(&m_pcmData, sizeof(unsigned short), FileSeekMode_cur);
-
+	/* write pcm data */
+	unsigned short pcmBuffer;
+	pcmFile.read(&pcmBuffer, sizeof(unsigned short), 1);
 	while(!pcmFile.isEndOfFile())
 	{
 		pcmDATA.dwSize += 2;
-		wavFile.write(&m_pcmData, sizeof(unsigned short), FileSeekMode_cur);
-		pcmFile.read(&m_pcmData, sizeof(unsigned short), FileSeekMode_cur);
+		wavFile.write(&pcmBuffer, sizeof(unsigned short), 1);
+		pcmFile.read(&pcmBuffer, sizeof(unsigned short), 1);
 	}
 
 	pcmHEADER.dwSize = 44 + pcmDATA.dwSize;
 
 	wavFile.rewind();
 
-	wavFile.write(&pcmHEADER, sizeof(WAVE_HEADER), FileSeekMode_cur);
+	wavFile.write(&pcmHEADER, sizeof(WAVE_HEADER), 1);
 	wavFile.seek(sizeof(WAVE_FMT), FileSeekMode_cur);
-	wavFile.write(&pcmDATA, sizeof(WAVE_DATA), FileSeekMode_cur);
+	wavFile.write(&pcmDATA, sizeof(WAVE_DATA), 1);
 
 	pcmFile.close();
 	wavFile.close();
+
+	return TRUE;
 }
 
 }

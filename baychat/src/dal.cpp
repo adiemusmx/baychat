@@ -105,6 +105,22 @@ BOOL File::isExist(const WCHAR* fileName)
 	return _access(tempFileName, 0) == 0 ? TRUE : FALSE;
 }
 
+BOOL File::rename(const WCHAR* from, const WCHAR* to)
+{
+	CHAR tempFrom[FILE_NAME_MAX_LENGTH] = { 0 };
+	sprintf_s(tempFrom, "%S", from);
+	CHAR tempTo[FILE_NAME_MAX_LENGTH] = { 0 };
+	sprintf_s(tempTo, "%S", to);
+	return ::rename(tempFrom, tempTo) == 0 ? TRUE : FALSE;
+}
+
+BOOL File::remove(const WCHAR* fileName)
+{
+	CHAR tempFileName[FILE_NAME_MAX_LENGTH] = { 0 };
+	sprintf_s(tempFileName, "%S", fileName);
+	return ::remove(tempFileName) == 0 ? TRUE : FALSE;
+}
+
 size_t File::length()
 {
 	return m_length;

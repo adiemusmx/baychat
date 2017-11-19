@@ -84,6 +84,12 @@ public:
 	/* 文件是否存在 */
 	static BOOL isExist(const WCHAR* fileName);
 
+	/* 重命名 */
+	static BOOL rename(const WCHAR* from, const WCHAR* to);
+
+	/* 删除文件 */
+	static BOOL remove(const WCHAR* fileName);
+
 private:
 	WCHAR m_name[FILE_NAME_MAX_LENGTH];
 	FILE* m_file;

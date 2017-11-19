@@ -12,21 +12,26 @@ int main()
 	MicDeviceAdapter* adapter = new MicDeviceAdapter_Wave();
 
 	File file;
-	file.open(L"D:/pcm/input.pcm", FileMode_readAndWrite);
+	file.open(L"input.pcm", FileMode_readAndWrite);
 
 	adapter->openSession();
+	LOGGER_INFO_LOG("Open Session.");
+
 	int i = 5;
 	while (i--)
 	{
-		LOGGER_INFO_LOG("second [%d]", i);
+		LOGGER_TRACE_LOG("second [%d]", i);
 		adapter->read(1000);
 		file.write(adapter->getBuffer()->m_buffer, sizeof(BYTE), adapter->getBuffer()->m_validSize);
 	}
+
+	LOGGER_INFO_LOG("Close Session.");
 	adapter->closeSession();
 
 	file.close();
 
-	AudioFormatter::pcm2wav(L"D:/pcm/input.pcm", L"D:/pcm/output.wav");
+	LOGGER_INFO_LOG("Convert File Format.");
+	AudioFormatter::pcm2wav(L"input.pcm", L"output.wav");
 
 	return 0;
 }
