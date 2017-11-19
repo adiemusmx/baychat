@@ -67,7 +67,7 @@ BOOL File::open(const WCHAR* fileName, FileMode mode)
 	m_mode = mode;
 
 	CHAR tempFileName[FILE_NAME_MAX_LENGTH] = { 0 };
-	sprintf(tempFileName, "%S", m_name);
+	sprintf_s(tempFileName, "%S", m_name);
 	errno_t error = fopen_s(&m_file, tempFileName, fileModeTbl[m_mode]);
 
 	if (m_file != NULL)
@@ -101,7 +101,7 @@ BOOL File::isValid()
 BOOL File::isExist(const WCHAR* fileName)
 {
 	CHAR tempFileName[FILE_NAME_MAX_LENGTH] = { 0 };
-	sprintf(tempFileName, "%S", fileName);
+	sprintf_s(tempFileName, "%S", fileName);
 	return _access(tempFileName, 0) == 0 ? TRUE : FALSE;
 }
 

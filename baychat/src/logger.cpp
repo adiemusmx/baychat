@@ -36,7 +36,7 @@ void Logger::print(CHAR* file, uint32 lineNum, CHAR* function, LogLevel level, C
 	const CHAR* levelNameTbl[LogLevel_max] = { "VERBOSE", "TRACE", "INFO", "WARNING", "ERROR"};
 
 	/* 计算缓存 */
-	sprintf(buffer, VS_LOG_FORMAT, current.m_hour, current.m_minute, current.m_second, current.m_millisecond, ThreadHelper::getCurrentThreadId(), file, lineNum, function, levelNameTbl[level], content);
+	sprintf_s(buffer, VS_LOG_FORMAT, current.m_hour, current.m_minute, current.m_second, current.m_millisecond, ThreadHelper::getCurrentThreadId(), file, lineNum, function, levelNameTbl[level], content);
 
 	/* 输出到控制台 */
 	m_mutex->lock();

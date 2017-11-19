@@ -45,7 +45,7 @@ MicDeviceAdapter::~MicDeviceAdapter()
 
 void MicDeviceAdapter::resizeBuffer(size_t sizeOfBuffer)
 {
-	LOGGER_TRACE_LOG("%u", sizeOfBuffer);
+	LOGGER_TRACE_LOG("%llu", sizeOfBuffer);
 
 	m_mutex->lock();
 
@@ -104,13 +104,13 @@ void MicDeviceAdapter_Wave::openSession()
 void MicDeviceAdapter_Wave::read(size_t timeInMillisecond)
 {
 	LOGGER_TRACE_LOG_START();
-	LOGGER_INFO_LOG("time[%d]", timeInMillisecond);
+	LOGGER_INFO_LOG("time[%llu]", timeInMillisecond);
 
 	m_mutex->lock();
 
 	WAVEHDR wHdr1; //采集音频时包含数据缓存的结构体
 	wHdr1.lpData = (LPSTR)m_buffer->m_buffer;
-	wHdr1.dwBufferLength = getSizeOfBuffer();
+	wHdr1.dwBufferLength = (DWORD)getSizeOfBuffer();
 	wHdr1.dwBytesRecorded = 0;
 	wHdr1.dwUser = 0;
 	wHdr1.dwFlags = 0;
@@ -118,7 +118,7 @@ void MicDeviceAdapter_Wave::read(size_t timeInMillisecond)
 	waveInPrepareHeader(m_hWaveIn, &wHdr1, sizeof(WAVEHDR));//准备一个波形数据块头用于录音
 	waveInAddBuffer(m_hWaveIn, &wHdr1, sizeof (WAVEHDR));//指定波形数据块为录音输入缓存
 	waveInStart(m_hWaveIn);//开始录音
-	Sleep(timeInMillisecond);//等待声音录制1s
+	Sleep((DWORD)timeInMillisecond);//等待声音录制1s
 	waveInReset(m_hWaveIn);//停止录音
 
 	m_buffer->m_validSize = wHdr1.dwBytesRecorded;
