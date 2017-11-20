@@ -10,6 +10,9 @@
 #include <stdio.h>
 #include <tchar.h>
 #include <io.h>
+#include <windows.h>
+#include <conio.h>
+#include <errno.h>
 
 #include "logger.h"
 
