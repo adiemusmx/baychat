@@ -50,7 +50,7 @@ enum FileSeekMode
 	FileSeekMode_max
 };
 
-#define FILE_NAME_MAX_LENGTH 512
+#define FILE_NAME_MAX_LENGTH 260
 
 class File
 {
@@ -60,6 +60,7 @@ public:
 
 	/* 打开/关闭文件 */
 	BOOL open(const WCHAR* fileName, FileMode mode);
+	BOOL open(const CHAR* fileName, FileMode mode);
 	void close();
 
 	/* 文件是否可用 */
@@ -83,12 +84,15 @@ public:
 public:
 	/* 文件是否存在 */
 	static BOOL isExist(const WCHAR* fileName);
+	static BOOL isExist(const CHAR* fileName);
 
 	/* 重命名 */
 	static BOOL rename(const WCHAR* from, const WCHAR* to);
+	static BOOL rename(const CHAR* from, const CHAR* to);
 
 	/* 删除文件 */
 	static BOOL remove(const WCHAR* fileName);
+	static BOOL remove(const CHAR* fileName);
 
 private:
 	WCHAR m_name[FILE_NAME_MAX_LENGTH];

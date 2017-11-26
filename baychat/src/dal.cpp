@@ -57,18 +57,23 @@ File::~File()
 
 BOOL File::open(const WCHAR* fileName, FileMode mode)
 {
-	LOGGER_TRACE_LOG("name[%S] mode[%d]", fileName, mode);
+	CHAR tempFileName[FILE_NAME_MAX_LENGTH] = { 0 };
+	sprintf_s(tempFileName, "%S", fileName);
+	return File::open(tempFileName, mode);
+}
 
-	const CHAR* fileModeTbl[FileMode_max] = { "r", "rb", "rt", "w+", "wb+", "wt+", "a+", "ab+", "at+" };
+BOOL File::open(const CHAR* fileName, FileMode mode)
+{
+	LOGGER_TRACE_LOG("name[%s] mode[%d]", fileName, mode);
 
 	memset(m_name, 0x00, sizeof(m_name));
-	swprintf_s(m_name, L"%s", fileName);
+	swprintf_s(m_name, L"%S", fileName);
 
 	m_mode = mode;
 
-	CHAR tempFileName[FILE_NAME_MAX_LENGTH] = { 0 };
-	sprintf_s(tempFileName, "%S", m_name);
-	errno_t error = fopen_s(&m_file, tempFileName, fileModeTbl[m_mode]);
+	const CHAR* fileModeTbl[FileMode_max] = { "r", "rb", "rt", "w+", "wb+", "wt+", "a+", "ab+", "at+" };
+
+	errno_t error = fopen_s(&m_file, fileName, fileModeTbl[m_mode]);
 
 	if (m_file != NULL)
 	{
@@ -102,7 +107,12 @@ BOOL File::isExist(const WCHAR* fileName)
 {
 	CHAR tempFileName[FILE_NAME_MAX_LENGTH] = { 0 };
 	sprintf_s(tempFileName, "%S", fileName);
-	return _access(tempFileName, 0) == 0 ? TRUE : FALSE;
+	return isExist(tempFileName);
+}
+
+BOOL File::isExist(const CHAR* fileName)
+{
+	return _access(fileName, 0) == 0 ? TRUE : FALSE;
 }
 
 BOOL File::rename(const WCHAR* from, const WCHAR* to)
@@ -111,14 +121,24 @@ BOOL File::rename(const WCHAR* from, const WCHAR* to)
 	sprintf_s(tempFrom, "%S", from);
 	CHAR tempTo[FILE_NAME_MAX_LENGTH] = { 0 };
 	sprintf_s(tempTo, "%S", to);
-	return ::rename(tempFrom, tempTo) == 0 ? TRUE : FALSE;
+	return File::rename(tempFrom, tempTo);
+}
+
+BOOL File::rename(const CHAR* from, const CHAR* to)
+{
+	return ::rename(from, to) == 0 ? TRUE : FALSE;
 }
 
 BOOL File::remove(const WCHAR* fileName)
 {
 	CHAR tempFileName[FILE_NAME_MAX_LENGTH] = { 0 };
 	sprintf_s(tempFileName, "%S", fileName);
-	return ::remove(tempFileName) == 0 ? TRUE : FALSE;
+	return File::remove(tempFileName);
+}
+
+BOOL File::remove(const CHAR* fileName)
+{
+	return ::remove(fileName) == 0 ? TRUE : FALSE;
 }
 
 size_t File::length()

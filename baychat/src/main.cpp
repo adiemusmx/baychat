@@ -4,11 +4,13 @@
 #include "stdafx.h"
 #include "mic_device_adapter.h"
 #include "file_formatter.h"
+#include "asr_service.h"
 
 using namespace BayChat;
 
 int main()
 {
+#if 0
 	MicDeviceAdapter* adapter = new MicDeviceAdapter_Wave();
 
 	File file;
@@ -32,6 +34,14 @@ int main()
 
 	LOGGER_INFO_LOG("Convert File Format.");
 	AudioFormatter::pcm2wav(L"input.pcm", L"output.wav");
+#endif
+
+	AsrService* asr = new AsrService_IFly();
+	asr->openSession();
+	asr->update(L"output.wav");
+	asr->closeSession();
+
+	system("pause");
 
 	return 0;
 }
