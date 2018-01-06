@@ -45,6 +45,12 @@
     <ClInclude Include="include\asr_service.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\speech_recognizer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\winrec.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -69,6 +75,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\asr_service.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\winrec.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\speech_recognizer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\iat_record_sample.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

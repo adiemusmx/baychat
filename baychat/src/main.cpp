@@ -8,6 +8,7 @@
 
 using namespace BayChat;
 
+#if 0
 int main()
 {
 #if 0
@@ -46,3 +47,4 @@ int main()
 	return 0;
 }
 
+#endif

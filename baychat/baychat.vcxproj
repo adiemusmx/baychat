@@ -102,7 +102,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>include;..\libs\</AdditionalIncludeDirectories>
     </ClCompile>
@@ -156,23 +156,28 @@
     <ClInclude Include="include\dal.h" />
     <ClInclude Include="include\logger.h" />
     <ClInclude Include="include\mic_device_adapter.h" />
+    <ClInclude Include="include\speech_recognizer.h" />
     <ClInclude Include="include\util.h" />
     <ClInclude Include="include\file_formatter.h" />
     <ClInclude Include="src\stdafx.h" />
     <ClInclude Include="src\targetver.h" />
+    <ClInclude Include="src\winrec.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\asr_service.cpp" />
     <ClCompile Include="src\dal.cpp" />
+    <ClCompile Include="src\iat_record_sample.cpp" />
     <ClCompile Include="src\logger.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\mic_device_adapter.cpp" />
+    <ClCompile Include="src\speech_recognizer.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\util.cpp" />
     <ClCompile Include="src\file_formatter.cpp" />
+    <ClCompile Include="src\winrec.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

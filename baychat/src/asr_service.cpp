@@ -94,7 +94,13 @@ void AsrService_IFly::update(const WCHAR* audio_file)
 	*
 	* 详细参数说明请参阅《讯飞语音云MSC--API文档》
 	*/
-	const CHAR*	session_begin_params	=	"sub = asr, result_type = plain, result_encoding = gb2312,sample_rate = 16000,aue = speex-wb";
+	//const CHAR*	session_begin_params	=	"sub = asr, result_type = plain, result_encoding = gb2312,sample_rate = 16000,aue = speex-wb";
+	const CHAR*	session_begin_params =
+	    "sub = iat, \
+		result_type = json, \
+		result_encoding = gb2312, \
+		sample_rate = 16000, \
+		aue = speex-wb";
 
 	if (NULL == audio_file)
 		goto asr_exit;
@@ -112,6 +118,8 @@ void AsrService_IFly::update(const WCHAR* audio_file)
 	pcm_size = f_pcm.length();
 	f_pcm.seek(0, FileSeekMode_set);
 
+
+	LOGGER_TRACE_LOG("file size[%d]", pcm_size);
 	p_pcm = (char*)malloc(pcm_size);
 	if (NULL == p_pcm)
 	{
@@ -160,8 +168,10 @@ void AsrService_IFly::update(const WCHAR* audio_file)
 
 		if (MSP_EP_AFTER_SPEECH == ep_stat)
 			break;
-		Sleep(200); //模拟人说话时间间隙，10帧的音频长度为200ms
+
+		//Sleep(200); //模拟人说话时间间隙，10帧的音频长度为200ms
 	}
+	LOGGER_TRACE_LOG("upload size[%d]", pcm_count);
 	errcode = QISRAudioWrite(session_id, NULL, 0, MSP_AUDIO_SAMPLE_LAST, &ep_stat, &rec_stat);
 	if (MSP_SUCCESS != errcode)
 	{

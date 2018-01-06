@@ -6,3 +6,4 @@ baychat.exe
 baychat.ilk
 baychat.pdb
 *.suo
+/bin/msc
