@@ -101,5 +101,4 @@ private:
 	size_t m_length;
 };
 
-
 }

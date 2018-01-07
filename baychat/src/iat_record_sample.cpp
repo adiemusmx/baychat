@@ -406,7 +406,7 @@ exit:
 	sr_uninit(&iat);
 }
 
-
+#if 0
 /* main thread: start/stop record ; query the result of recgonization.
  * record thread: record callback(data write)
  * helper thread: ui(keystroke detection)
@@ -471,3 +471,4 @@ exit:
 
 	return 0;
 }
+#endif

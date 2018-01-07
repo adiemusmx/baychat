@@ -63,6 +63,9 @@ private:
 #define LOGGER_TRACE_LOG_END() { \
 		BayChat::Logger::instance()->print(__FILE__, __LINE__, __FUNCTION__, BayChat::LogLevel_trace, "[END]"); }
 
+#define LOGGER_TRACE_LOG_STEP() { \
+		BayChat::Logger::instance()->print(__FILE__, __LINE__, __FUNCTION__, BayChat::LogLevel_trace, "[STEP]"); }
+
 #define LOGGER_INFO_LOG(format,...) { \
 		CHAR _temp_log_buffer[LOGGER_BUFFER_TEMP]; \
 		sprintf_s(_temp_log_buffer, format, ##__VA_ARGS__); \
