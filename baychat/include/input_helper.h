@@ -34,7 +34,9 @@ namespace BayChat {
 		KeyCode_F11, KeyCode_F12,
 
 		KeyCode_INSERT, KeyCode_DELETE, KeyCode_HOME, KeyCode_END, KeyCode_PAGEUP, KeyCode_PAGEDOWN,
-		KeyCode_ESC, KeyCode_ENTER, KeyCode_BACKSPACE
+		KeyCode_ESC, KeyCode_ENTER, KeyCode_BACKSPACE, KeyCode_SPACE, KeyCode_TAB,
+
+		KeyCode_UP, KeyCode_DOWN, KeyCode_LEFT, KeyCode_RIGHT,
 	};
 
 	/* 
@@ -46,8 +48,8 @@ namespace BayChat {
 		static InputHelper* instance();
 
 		/* ≥ı ºªØ */
-		void init();
-		void cleanup();
+		void run();
+		void stop();
 
 	private:
 		InputHelper();
@@ -59,7 +61,7 @@ namespace BayChat {
 		KeyCode getKey();
 		static unsigned int runnableProc(void* data);
 
-		std::thread* m_thread;
+		volatile BOOL m_exit;
 	};
 
 }

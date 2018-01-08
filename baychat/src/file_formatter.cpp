@@ -53,7 +53,7 @@ BOOL AudioFormatter::pcm2wav(const WCHAR * pcmFileName, const WCHAR * wavFileNam
 	memset(&pcmDATA, 0x00, sizeof(pcmDATA));
 
 	pcmFile.open(pcmFileName, FileMode_readBinary);
-	if(!pcmFile.isValid())
+	if(!pcmFile.isOpen())
 	{
 		LOGGER_WARNING_LOG("open pcm file failed.");
 		return FALSE;
@@ -66,7 +66,7 @@ BOOL AudioFormatter::pcm2wav(const WCHAR * pcmFileName, const WCHAR * wavFileNam
 	}
 
 	wavFile.open(wavFileName, FileMode_readAndWriteBinary);
-	if(!wavFile.isValid())
+	if(!wavFile.isOpen())
 	{
 		LOGGER_WARNING_LOG("open wav file failed.");
 		return FALSE;

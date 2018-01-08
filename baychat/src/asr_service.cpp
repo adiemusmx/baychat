@@ -108,7 +108,7 @@ void AsrService_IFly::update(const WCHAR* audio_file)
 	//f_pcm = fopen(audio_file, "rb");
 	f_pcm.open(audio_file, FileMode_readBinary);
 
-	if (!f_pcm.isValid())
+	if (!f_pcm.isOpen())
 	{
 		LOGGER_ERROR_LOG("Open [%S] failed!", audio_file);
 		goto asr_exit;
@@ -118,8 +118,8 @@ void AsrService_IFly::update(const WCHAR* audio_file)
 	pcm_size = f_pcm.length();
 	f_pcm.seek(0, FileSeekMode_set);
 
+	LOGGER_TRACE_LOG("file size[%zu]", pcm_size);
 
-	LOGGER_TRACE_LOG("file size[%d]", pcm_size);
 	p_pcm = (char*)malloc(pcm_size);
 	if (NULL == p_pcm)
 	{
@@ -204,7 +204,7 @@ void AsrService_IFly::update(const WCHAR* audio_file)
 	LOGGER_INFO_LOG("Recognation Completed. --> [%s]", rec_result);
 
 asr_exit:
-	if (f_pcm.isValid())
+	if (f_pcm.isOpen())
 	{
 		f_pcm.close();
 	}
@@ -250,7 +250,7 @@ int32 AsrService_IFly::getNumberGrammarId(CHAR* grammarId, uint32 idLen)
 		goto grammar_exit;
 
 	fp.open(GRAMMAR_ID_DIGIT_ABNF, FileMode_readBinary);
-	if (!fp.isValid())
+	if (!fp.isOpen())
 	{
 		LOGGER_ERROR_LOG("Open Grammar File Failed!");
 		goto grammar_exit;
@@ -290,7 +290,7 @@ int32 AsrService_IFly::getNumberGrammarId(CHAR* grammarId, uint32 idLen)
 	LOGGER_INFO_LOG("Grammar Id: %s", grammarId);
 
 grammar_exit:
-	if (fp.isValid())
+	if (fp.isOpen())
 	{
 		fp.close();
 	}

@@ -151,6 +151,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\app.h" />
     <ClInclude Include="include\asr_service.h" />
     <ClInclude Include="include\basic_types.h" />
     <ClInclude Include="include\dal.h" />
@@ -165,6 +166,7 @@
     <ClInclude Include="src\winrec.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\app.cpp" />
     <ClCompile Include="src\asr_service.cpp" />
     <ClCompile Include="src\dal.cpp" />
     <ClCompile Include="src\input_helper.cpp" />

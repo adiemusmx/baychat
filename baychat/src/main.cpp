@@ -11,8 +11,13 @@ using namespace BayChat;
 
 int main()
 {
-	InputHelper::instance()->init();
-	WaitForSingleObject(InputHelper::instance()->getHandle(), INFINITE);
+	Logger::instance()->setLevel(LogLevel_trace);
+	Logger::instance()->setFilePath(L"log");
+	Logger::instance()->setFileEnable(TRUE);
+
+	InputHelper::instance()->run();
+
+	while (TRUE);
 
 	return 0;
 }

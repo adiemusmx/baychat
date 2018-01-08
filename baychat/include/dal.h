@@ -2,28 +2,10 @@
 
 #include "basic_types.h"
 
+#define AUTORELEASE_MUTEX_OBJECT(x) std::lock_guard<std::mutex> _autoReleaseMutexObject(*x);
+
 namespace BayChat
 {
-
-/*
- * 多线程MutexMutex
- */
-class Mutex
-{
-public:
-	Mutex();
-	virtual ~Mutex();
-
-	/* 进行加锁和解锁操作 */
-	virtual void lock();
-	virtual void unlock();
-
-private:
-	Mutex(const Mutex& mutex);
-	Mutex operator=(const Mutex& mutex);
-
-	HANDLE m_handle;
-};
 
 /*
  * 文件读写接口封装
@@ -64,8 +46,8 @@ public:
 	void close();
 
 	/* 文件是否可用 */
-	BOOL isValid();
-
+	BOOL isOpen();
+	
 	/* 文件长度 */
 	size_t length();
 
@@ -85,6 +67,14 @@ public:
 	/* 文件是否存在 */
 	static BOOL isExist(const WCHAR* fileName);
 	static BOOL isExist(const CHAR* fileName);
+
+	/* 创建文件夹 */
+	static BOOL createDir(const WCHAR* fileName);
+	static BOOL createDir(const CHAR* fileName);
+
+	/* 删除文件夹 */
+	static BOOL removeDir(const WCHAR* fileName);
+	static BOOL removeDir(const CHAR* fileName);
 
 	/* 重命名 */
 	static BOOL rename(const WCHAR* from, const WCHAR* to);

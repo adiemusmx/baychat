@@ -1,42 +1,9 @@
 #include "stdafx.h"
 #include "dal.h"
+#include <direct.h>
 
 namespace BayChat
 {
-
-Mutex::Mutex()
-{
-	m_handle = CreateMutex(NULL, TRUE, NULL);
-	if (m_handle == NULL)
-	{
-		LOGGER_ERROR_LOG("Invalid Create Mutex. Error[%u]", GetLastError());
-	}
-}
-
-Mutex::~Mutex()
-{
-	if (m_handle != NULL)
-	{
-		CloseHandle(m_handle);
-		m_handle = NULL;
-	}
-}
-
-void Mutex::lock()
-{
-	if (m_handle != NULL)
-	{
-		WaitForSingleObject(m_handle, INFINITE);
-	}
-}
-
-void Mutex::unlock()
-{
-	if (m_handle != NULL)
-	{
-		ReleaseMutex(m_handle);
-	}
-}
 
 File::File()
 {
@@ -98,7 +65,7 @@ void File::close()
 	}
 }
 
-BOOL File::isValid()
+BOOL File::isOpen()
 {
 	return m_file != NULL;
 }
@@ -107,12 +74,36 @@ BOOL File::isExist(const WCHAR* fileName)
 {
 	CHAR tempFileName[FILE_NAME_MAX_LENGTH] = { 0 };
 	sprintf_s(tempFileName, "%S", fileName);
-	return isExist(tempFileName);
+	return _access(tempFileName, 0) == 0 ? TRUE : FALSE;
 }
 
 BOOL File::isExist(const CHAR* fileName)
 {
 	return _access(fileName, 0) == 0 ? TRUE : FALSE;
+}
+
+BOOL File::createDir(const WCHAR* fileName)
+{
+	CHAR tempFileName[FILE_NAME_MAX_LENGTH] = { 0 };
+	sprintf_s(tempFileName, "%S", fileName);
+	return _mkdir(tempFileName) == 0 ? TRUE : FALSE;
+}
+
+BOOL File::createDir(const CHAR* fileName)
+{
+	return _mkdir(fileName) == 0 ? TRUE : FALSE;
+}
+
+BOOL File::removeDir(const WCHAR* fileName)
+{
+	CHAR tempFileName[FILE_NAME_MAX_LENGTH] = { 0 };
+	sprintf_s(tempFileName, "%S", fileName);
+	return _rmdir(tempFileName) == 0 ? TRUE : FALSE;
+}
+
+BOOL File::removeDir(const CHAR* fileName)
+{
+	return _rmdir(fileName) == 0 ? TRUE : FALSE;
 }
 
 BOOL File::rename(const WCHAR* from, const WCHAR* to)

@@ -25,7 +25,7 @@ MicDeviceAdapter::MicDeviceAdapter()
 {
 	m_sizeOfBuffer = MIC_DEVICE_ADAPTER_DEFAULT_SIZE;
 	m_buffer = new VoiceData(m_sizeOfBuffer);
-	m_mutex = new Mutex();
+	m_mutex = new std::mutex();
 }
 
 MicDeviceAdapter::~MicDeviceAdapter()

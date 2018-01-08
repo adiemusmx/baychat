@@ -2,6 +2,7 @@
 
 #include "basic_types.h"
 #include "dal.h"
+#include <mutex>
 
 #define LOGGER_BUFFER_TEMP 512
 
@@ -32,8 +33,14 @@ public:
 	/* 设定log输出级别 */
 	void setLevel(LogLevel level);
 
+	/* 文件路径 */
+	void setFilePath(const WCHAR* path);
+
+	/* 设定文件是否输出 */
+	void setFileEnable(BOOL enable);
+
 	/* 输出log */
-	void print(CHAR* file, uint32 lineNum, CHAR* function, LogLevel level, CHAR* content);
+	void print(const CHAR* file, uint32 lineNum, const CHAR* function, LogLevel level, const CHAR* content);
 
 private:
 	Logger();
@@ -42,9 +49,14 @@ private:
 	Logger(const Logger&);
 	Logger& operator=(const Logger&);
 
-	Mutex* m_mutex;
+	const CHAR* trimPath(const char* path);
+
+	std::mutex* m_mutex;
 
 	LogLevel m_level;
+	BOOL m_fileEnable;
+	File m_file;
+	WCHAR m_filePath[FILE_NAME_MAX_LENGTH];
 };
 
 #define LOGGER_VERBOSE_LOG(format,...) { \

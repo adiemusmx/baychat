@@ -1,6 +1,7 @@
 #pragma once
 
 #include "basic_types.h"
+#include <mutex>
 
 namespace BayChat
 {
@@ -43,7 +44,7 @@ public:
 
 protected:
 	/* Ëø */
-	Mutex * m_mutex;
+	std::mutex* m_mutex;
 
 	/* »º´æ */
 	VoiceData * m_buffer;
